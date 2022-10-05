@@ -47,4 +47,4 @@
            "More information..."]]]]])
     (html2hiccup (slurp "example.html")))))
 
-#_(deftest windmill-test (is (= '() (html2hiccup (slurp "windmill.html")))))
+(deftest windmill-test (is (= "<!DOCTYPE html>" (first (html2hiccup (slurp "windmill.html"))))))

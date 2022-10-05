@@ -8,8 +8,8 @@
 
 (defn remove-blanks
   [node]
-  (if (and (vector? node) (keyword? (first node)))
-    (->> (remove #(and (string? %) (str/blank? %)) node)
+  (if (and (vector? node) (keyword? (first node)) (map? (second node)))
+    (->> (concat [(first node) (second node)] (remove #(and (string? %) (str/blank? %)) (rest (rest node))))
          (into []))
     node))
 
