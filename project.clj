@@ -5,7 +5,10 @@
                            :url "gitlab://gitlab.com/api/v4/projects/36492006/packages/maven"
                            :username "Private-Token"}}
   :bat-test {:capture-output? false}
-  :dependencies [[org.clojure/clojure "1.11.1"]]
+  :dependencies [[org.clojure/clojure "1.11.1"]
+                 [hickory/hickory "0.7.1"]
+                 [zprint "1.2.4"]
+                 [org.clojure/tools.reader "1.3.6"]]
   :main ^:skip-aot html2hiccup.core
   :target-path "target/%s"
   :plugins
