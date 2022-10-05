@@ -1,6 +1,7 @@
 (ns html2hiccup.core-test
   (:require
    [clojure.test :refer [deftest is]]
+   [hickory.render :refer [hiccup-to-html]]
    [html2hiccup.core :refer [html2hiccup]]))
 
 (deftest tw-test
@@ -48,3 +49,6 @@
     (html2hiccup (slurp "example.html")))))
 
 (deftest windmill-test (is (not= [] (html2hiccup (slurp "windmill.html")))))
+
+(deftest x-test
+  (is (= "<h1>hi</h1>" (hiccup-to-html (list [:h1 "hi"])))))
