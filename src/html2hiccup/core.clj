@@ -62,4 +62,4 @@
   (->> file
        slurp
        html2hiccup
-       (apply czprint)))
+       czprint))
