@@ -6,9 +6,8 @@
                            :username "Private-Token"}}
   :bat-test {:capture-output? false}
   :dependencies [[org.clojure/clojure "1.11.1"]]
-  :main ^:skip-aot html2hiccup .core
+  :main ^:skip-aot html2hiccup.core
   :target-path "target/%s"
   :plugins
   [[com.ragaus/lein-gitlab-wagon "1.0.0"] [coreagile/lein-sha-version "0.1.2"] [metosin/bat-test "0.4.4"]]
-  :profiles {:uberjar {:aot :all
-                       :jvm-opts ["-Dclojure.compiler.direct-linking=true"]}})
+  :profiles {:uberjar {:aot :all :jvm-opts ["-Dclojure.compiler.direct-linking=true"]}})
