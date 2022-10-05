@@ -51,7 +51,8 @@
 (deftest windmill-test (is (not= [] (html2hiccup (slurp "windmill.html")))))
 
 (deftest defer-test
-  (is (= '([:html [:head [:script {:defer true, :src "s.js"}]] [:body]]) (html2hiccup "<script defer src='s.js'></script>"))))
+  (is (= '([:html [:head [:script {:defer true :src "s.js"}]] [:body]])
+         (html2hiccup "<script defer src='s.js'></script>"))))
 
 (deftest alpine-test
   (is (= '([:html [:head] [:body [:a {":href" "#"} "x"]]]) (html2hiccup "<a :href=\"#\">x</a>"))))

@@ -9,7 +9,9 @@
 (defn remove-blanks
   [node]
   (if (and (vector? node) (keyword? (first node)) (map? (second node)))
-    (->> (concat [(first node) (second node)] (remove #(and (string? %) (or (str/blank? %) (re-matches #"<!-- .+ -->" %))) (rest (rest node))))
+    (->> (concat [(first node) (second node)]
+                 (remove #(and (string? %) (or (str/blank? %) (re-matches #"<!-- .+ -->" %)))
+                         (rest (rest node))))
          (into []))
     node))
 
@@ -35,14 +37,14 @@
                   (rest (rest node))))
     node))
 
-(defn true-attr-values [node]
+(defn true-attr-values
+  [node]
   (if (and (vector? node) (keyword? (first node)) (map? (second node)))
     (into []
-          (concat [(first node) (zipmap (keys (second node)) (map #(if (= "" %) true %) (vals (second node))))]
+          (concat [(first node)
+                   (zipmap (keys (second node)) (map #(if (= "" %) true %) (vals (second node))))]
                   (rest (rest node))))
-    node
-    )
-  )
+    node))
 
 (defn tw
   [node]
@@ -54,10 +56,7 @@
                   (rest (rest node))))
     node))
 
-(defn fix-alpine-keywords [node]
-  (if (and (keyword? node) (re-find #"^:" (name node)))
-    (name node)
-    node))
+(defn fix-alpine-keywords [node] (if (and (keyword? node) (re-find #"^:" (name node))) (name node) node))
 
 (defn html2hiccup
   [input]
@@ -70,8 +69,7 @@
        (postwalk tw)
        (postwalk true-attr-values)
        (postwalk keyword-attr-keys)
-       (postwalk remove-empty-attr-maps)
-       ))
+       (postwalk remove-empty-attr-maps)))
 
 (defn -main
   [file]
