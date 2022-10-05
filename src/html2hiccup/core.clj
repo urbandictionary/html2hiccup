@@ -14,6 +14,10 @@
          (into []))
     node))
 
+(defn trim-strings
+  [node]
+  (if (string? node) (str/trim node) node))
+
 (defn remove-empty-attrs
   [node]
   (if (and (vector? node) (keyword? (first node)) (map? (second node)) (empty? (second node)))
@@ -41,6 +45,7 @@
        hickory/parse
        hickory/as-hiccup
        (postwalk remove-blanks)
+       (postwalk trim-strings)
        (postwalk remove-empty-attrs)
        (postwalk tw)))
 ;; 
