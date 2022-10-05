@@ -53,5 +53,8 @@
 (deftest defer-test
   (is (= '([:html [:head [:script {:defer true, :src "s.js"}]] [:body]]) (html2hiccup "<script defer src='s.js'></script>"))))
 
+(deftest alpine-test
+  (is (= '([:html [:head] [:body [:a {":href" "#"} "x"]]]) (html2hiccup "<a :href=\"#\">x</a>"))))
+
 (deftest defer->html-test
   (is (= "<script defer>hi</script>" (hiccup-to-html (list [:script {:defer true} "hi"])))))

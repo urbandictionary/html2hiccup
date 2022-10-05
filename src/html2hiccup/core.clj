@@ -54,11 +54,17 @@
                   (rest (rest node))))
     node))
 
+(defn fix-alpine-keywords [node]
+  (if (and (keyword? node) (re-find #"^:" (name node)))
+    (name node)
+    node))
+
 (defn html2hiccup
   [input]
   (->> input
        hickory/parse
        hickory/as-hiccup
+       (postwalk fix-alpine-keywords)
        (postwalk remove-blanks)
        (postwalk trim-strings)
        (postwalk tw)
