@@ -26,10 +26,11 @@
 
 (def keywordable? (partial re-matches #"[a-zA-Z][-a-zA-Z0-9:]+"))
 
+(def try-keyword #(if (keywordable? %) (keyword %) %))
+
 (defn tw-classes
   [classes]
-  (for [class (str/split classes #"\s+")]
-    (if keywordable? (keyword class) class)))
+  (map try-keyword (str/split classes #"\s+")))
 
 (defn tw
   [node]
