@@ -17,7 +17,7 @@
           {:href "#"}
           "Tailwind CSS works by scanning all of your HTML files, JavaScript components, and any other templates for class names, generating the corresponding styles and then writing them to a static CSS file. It's fast, flexible, and reliable — with zero-runtime."]
          [:button
-          (tw :bg-sky-600 "hover:bg-sky-700" :px-5 :py-3 :text-white :rounded-lg)
+          (tw :bg-sky-600 :hover:bg-sky-700 :px-5 :py-3 :text-white :rounded-lg)
           "BUTTON EXAMPLE"]]]])
     (html2hiccup (slurp "tw.html")))))
 
@@ -46,3 +46,9 @@
            {:href "https://www.iana.org/domains/example"}
            "More information..."]]]]])
     (html2hiccup (slurp "example.html")))))
+
+#_(deftest windmill-test
+  (is
+   (=
+    '()
+    (html2hiccup (slurp "windmill.html")))))

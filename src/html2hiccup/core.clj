@@ -23,7 +23,7 @@
 (defn tw-classes
   [classes]
   (for [class (str/split classes #"\s+")]
-    (if (re-matches #"[a-zA-Z][-a-zA-Z0-9]+" class) (keyword class) class)))
+    (if (re-matches #"[a-zA-Z][-a-zA-Z0-9:]+" class) (keyword class) class)))
 
 (defn tw
   [node]
@@ -43,7 +43,7 @@
        (postwalk remove-blanks)
        (postwalk remove-empty-attrs)
        (postwalk tw)))
-
+;; 
 (defn -main
   [file]
   (->> file
