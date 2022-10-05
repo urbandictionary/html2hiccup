@@ -9,7 +9,7 @@
 (defn remove-blanks
   [node]
   (if (and (vector? node) (keyword? (first node)) (map? (second node)))
-    (->> (concat [(first node) (second node)] (remove #(and (string? %) (str/blank? %)) (rest (rest node))))
+    (->> (concat [(first node) (second node)] (remove #(and (string? %) (or (str/blank? %) (re-matches #"<!-- .+ -->" %))) (rest (rest node))))
          (into []))
     node))
 
