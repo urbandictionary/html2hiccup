@@ -9,7 +9,9 @@
 (defn remove-blanks
   [node]
   (if (and (vector? node) (keyword? (first node)))
-    (into [] (remove #(and (string? %) (str/blank? %)) node))
+    (->> node
+         (remove #(and (string? %) (str/blank? %)))
+         (into []))
     node))
 
 (defn remove-empty-attrs
