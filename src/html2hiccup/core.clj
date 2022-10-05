@@ -14,9 +14,7 @@
          (into []))
     node))
 
-(defn trim-strings
-  [node]
-  (if (string? node) (str/trim node) node))
+(defn trim-strings [node] (if (string? node) (str/trim node) node))
 
 (defn remove-empty-attrs
   [node]
@@ -28,15 +26,15 @@
 
 (def try-keyword #(if (keywordable? %) (keyword %) %))
 
-(defn tw-classes
-  [classes]
-  (map try-keyword (str/split classes #"\s+")))
+(defn tw-classes [classes] (map try-keyword (str/split classes #"\s+")))
 
-(defn keyword-attrs [node]
+(defn keyword-attrs
+  [node]
   (if (and (vector? node) (keyword? (first node)) (map? (second node)))
-    (into [] (concat [(first node) (zipmap (keys (second node)) (map try-keyword (vals (second node))))] (rest (rest node)) ))
-    node)
-  )
+    (into []
+          (concat [(first node) (zipmap (keys (second node)) (map try-keyword (vals (second node))))]
+                  (rest (rest node))))
+    node))
 
 (defn tw
   [node]

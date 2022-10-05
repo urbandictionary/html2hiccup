@@ -47,8 +47,4 @@
            "More information..."]]]]])
     (html2hiccup (slurp "example.html")))))
 
-#_(deftest windmill-test
-  (is
-   (=
-    '()
-    (html2hiccup (slurp "windmill.html")))))
+#_(deftest windmill-test (is (= '() (html2hiccup (slurp "windmill.html")))))
