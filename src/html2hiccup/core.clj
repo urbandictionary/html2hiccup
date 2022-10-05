@@ -18,12 +18,18 @@
     (into [] (concat [(first node)] (rest (rest node))))
     node))
 
+(defn tw-classes [classes]
+  (for [class (str/split classes #"\s+")]
+    (if (re-matches #"[a-zA-Z][-a-zA-Z0-9]+" class)
+      (keyword class)
+      class)))
+
 (defn tw
   [node]
   (if (and (vector? node) (keyword? (first node)) (map? (second node)) (:class (second node)))
     (into []
           (concat [(first node)]
-                  (cond-> [(list 'tw (:class (second node)))]
+                  (cond-> [(concat ['tw] (tw-classes (:class (second node))))]
                     (not= [:class] (keys (second node))) (conj (dissoc (second node) :class)))
                   (rest (rest node))))
     node))
