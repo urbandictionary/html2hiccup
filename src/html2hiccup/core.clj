@@ -9,8 +9,7 @@
 (defn remove-blanks
   [node]
   (if (and (vector? node) (keyword? (first node)))
-    (->> node
-         (remove #(and (string? %) (str/blank? %)))
+    (->> (remove #(and (string? %) (str/blank? %)) node)
          (into []))
     node))
 
@@ -24,7 +23,7 @@
 
 (def keywordable? (partial re-matches #"[a-zA-Z][-a-zA-Z0-9:]+"))
 
-(def try-keyword #(if (keywordable? %) (keyword %) %))
+(def try-keyword #(if (and (not (keyword? %)) (keywordable? %)) (keyword %) %))
 
 (defn tw-classes [classes] (map try-keyword (str/split classes #"\s+")))
 
@@ -53,9 +52,10 @@
        hickory/as-hiccup
        (postwalk remove-blanks)
        (postwalk trim-strings)
+       (postwalk tw)
        (postwalk keyword-attrs)
        (postwalk remove-empty-attrs)
-       (postwalk tw)))
+       ))
 
 (defn -main
   [file]
