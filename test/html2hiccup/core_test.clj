@@ -20,6 +20,10 @@
   (is (= '([:html [:head [:script {:defer true :src "s.js"}]] [:body]])
          (html2hiccup "<script defer src='s.js'></script>"))))
 
+(deftest defer-test
+  (is (= '([:html [:head] [:body [:a (tw :a-1 :b-2 :c-3 {:href "#"})]]])
+         (html2hiccup "<a class=\"a-1 b-2 c-3\" href=\"#\"></a>"))))
+
 (deftest alpine-test
   (is (= '([:html [:head] [:body [:a {":href" "#"} "x"]]]) (html2hiccup "<a :href=\"#\">x</a>")))
   (is (= '([:html [:head] [:body [:a {"@click" "#"} "x"]]]) (html2hiccup "<a @click=\"#\">x</a>"))))

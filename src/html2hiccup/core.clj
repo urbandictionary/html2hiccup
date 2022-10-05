@@ -51,8 +51,9 @@
   (if (and (vector? node) (keyword? (first node)) (map? (second node)) (:class (second node)))
     (into []
           (concat [(first node)]
-                  (cond-> [(concat ['tw] (tw-classes (:class (second node))))]
-                    (not= [:class] (keys (second node))) (conj (dissoc (second node) :class)))
+                  [(apply list
+                          (cond-> (into [] (concat ['tw] (tw-classes (:class (second node)))))
+                            (not= [:class] (keys (second node))) (conj (dissoc (second node) :class))))]
                   (rest (rest node))))
     node))
 
