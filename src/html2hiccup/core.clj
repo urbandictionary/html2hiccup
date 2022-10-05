@@ -32,6 +32,12 @@
   [classes]
   (map try-keyword (str/split classes #"\s+")))
 
+(defn keyword-attrs [node]
+  (if (and (vector? node) (keyword? (first node)) (map? (second node)))
+    (into [] (concat [(first node) (zipmap (keys (second node)) (map try-keyword (vals (second node))))] (rest (rest node)) ))
+    node)
+  )
+
 (defn tw
   [node]
   (if (and (vector? node) (keyword? (first node)) (map? (second node)) (:class (second node)))
@@ -49,9 +55,10 @@
        hickory/as-hiccup
        (postwalk remove-blanks)
        (postwalk trim-strings)
+       (postwalk keyword-attrs)
        (postwalk remove-empty-attrs)
        (postwalk tw)))
-;; 
+
 (defn -main
   [file]
   (->> file
