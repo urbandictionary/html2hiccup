@@ -24,10 +24,12 @@
     (into [] (concat [(first node)] (rest (rest node))))
     node))
 
+(def keywordable? (partial re-matches #"[a-zA-Z][-a-zA-Z0-9:]+"))
+
 (defn tw-classes
   [classes]
   (for [class (str/split classes #"\s+")]
-    (if (re-matches #"[a-zA-Z][-a-zA-Z0-9:]+" class) (keyword class) class)))
+    (if keywordable? (keyword class) class)))
 
 (defn tw
   [node]
