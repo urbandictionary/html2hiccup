@@ -12,6 +12,12 @@
     (into [] (remove #(and (string? %) (str/blank? %)) node))
     node))
 
+(defn remove-empty-attrs
+  [node]
+  (if (and (vector? node) (keyword? (first node)) (map? (second node)) (empty? (second node)))
+    (concat [(first node)] (rest (rest node)))
+    node))
+
 (defn -main
   [& args]
   (->> "example.html"
@@ -19,4 +25,5 @@
        hickory/parse
        hickory/as-hiccup
        (postwalk remove-blanks)
+       (postwalk remove-empty-attrs)
        czprint))
