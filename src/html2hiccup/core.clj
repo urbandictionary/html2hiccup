@@ -15,25 +15,34 @@
 
 (defn trim-strings [node] (if (string? node) (str/trim node) node))
 
-(defn remove-empty-attrs
+(defn remove-empty-attr-maps
   [node]
   (if (and (vector? node) (keyword? (first node)) (map? (second node)) (empty? (second node)))
     (into [] (concat [(first node)] (rest (rest node))))
     node))
 
-(def keywordable? (partial re-matches #"[a-zA-Z][-a-zA-Z0-9:]+"))
+(def keywordable? #(and (string? %) (re-matches #"[a-zA-Z][-a-zA-Z0-9:]+" %)))
 
-(def try-keyword #(if (and (not (keyword? %)) (keywordable? %)) (keyword %) %))
+(def try-keyword #(if (keywordable? %) (keyword %) %))
 
 (defn tw-classes [classes] (map try-keyword (str/split classes #"\s+")))
 
-(defn keyword-attrs
+(defn keyword-attr-keys
   [node]
   (if (and (vector? node) (keyword? (first node)) (map? (second node)))
     (into []
           (concat [(first node) (zipmap (keys (second node)) (map try-keyword (vals (second node))))]
                   (rest (rest node))))
     node))
+
+(defn true-attr-values [node]
+  (if (and (vector? node) (keyword? (first node)) (map? (second node)))
+    (into []
+          (concat [(first node) (zipmap (keys (second node)) (map #(if (= "" %) true %) (vals (second node))))]
+                  (rest (rest node))))
+    node
+    )
+  )
 
 (defn tw
   [node]
@@ -53,8 +62,9 @@
        (postwalk remove-blanks)
        (postwalk trim-strings)
        (postwalk tw)
-       (postwalk keyword-attrs)
-       (postwalk remove-empty-attrs)
+       (postwalk true-attr-values)
+       (postwalk keyword-attr-keys)
+       (postwalk remove-empty-attr-maps)
        ))
 
 (defn -main
