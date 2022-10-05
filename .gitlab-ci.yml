@@ -1,0 +1,14 @@
+---
+variables:
+  BUILD_IMAGE: "$CI_REGISTRY_IMAGE:$CI_PIPELINE_ID"
+Build:
+  stage: build
+  image: "$CI_REGISTRY/urbandictionary/ci/kaniko:latest"
+  script:
+  - kaniko --cache-ttl=6h --context $CI_PROJECT_DIR --destination $BUILD_IMAGE
+Test:
+  image: $BUILD_IMAGE
+  script:
+  - lein test
+default:
+  retry: 2
