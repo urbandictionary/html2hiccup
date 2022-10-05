@@ -23,7 +23,8 @@
   (if (and (vector? node) (keyword? (first node)) (map? (second node)) (:class (second node)))
     (into []
           (concat [(first node)]
-                  [(list 'tw (:class (second node)) (dissoc (second node) :class))]
+                  (cond-> [(list 'tw (:class (second node)))]
+                    (not= [:class] (keys (second node))) (conj (dissoc (second node) :class)))
                   (rest (rest node))))
     node))
 
