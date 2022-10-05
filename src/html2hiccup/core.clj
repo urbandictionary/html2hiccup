@@ -3,10 +3,14 @@
   (:require
    [hickory.core :as hickory]
    [clojure.string :as str]
-   [clojure.walk :refer [prewalk]]
+   [clojure.walk :refer [postwalk]]
    [zprint.core :refer [czprint]]))
 
-(defn remove-blanks [tree] (prewalk #(if (string? %) (str/trim %) %) tree))
+(defn remove-blanks
+  [node]
+  (if (and (vector? node) (keyword? (first node)))
+    (into [] (remove #(and (string? %) (str/blank? %)) node))
+    node))
 
 (defn -main
   [& args]
@@ -14,5 +18,5 @@
        slurp
        hickory/parse
        hickory/as-hiccup
-       remove-blanks
+       (postwalk remove-blanks)
        czprint))
