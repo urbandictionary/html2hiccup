@@ -18,11 +18,10 @@
     (into [] (concat [(first node)] (rest (rest node))))
     node))
 
-(defn tw-classes [classes]
+(defn tw-classes
+  [classes]
   (for [class (str/split classes #"\s+")]
-    (if (re-matches #"[a-zA-Z][-a-zA-Z0-9]+" class)
-      (keyword class)
-      class)))
+    (if (re-matches #"[a-zA-Z][-a-zA-Z0-9]+" class) (keyword class) class)))
 
 (defn tw
   [node]
@@ -34,13 +33,18 @@
                   (rest (rest node))))
     node))
 
-(defn -main
-  [& args]
-  (->> "tw.html"
-       slurp
+(defn html2hiccup
+  [input]
+  (->> input
        hickory/parse
        hickory/as-hiccup
        (postwalk remove-blanks)
        (postwalk remove-empty-attrs)
-       (postwalk tw)
-       czprint))
+       (postwalk tw)))
+
+(defn -main
+  [file]
+  (->> file
+       slurp
+       html2hiccup
+       (apply czprint)))
