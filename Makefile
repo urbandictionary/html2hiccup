@@ -6,4 +6,4 @@ test:
 	lein bat-test auto
 
 format:
-	find . -name \*.clj | xargs zprint -w
+	find . -name \*.clj -or -name \*.edn | xargs zprint -w

@@ -5,24 +5,16 @@
    [html2hiccup.core :refer [html2hiccup]]
    [clojure.java.io :as io]
    [clojure.edn :as edn])
-  (:import (java.io PushbackReader)))
+  (:import
+   (java.io PushbackReader)))
 
-(defn edn-file [path]
-  (edn/read (PushbackReader. (io/reader path))))
+(defn edn-file [path] (edn/read (PushbackReader. (io/reader path))))
 
-(deftest tw-test
-  (is
-   (=
-    (edn-file "tw.edn")
-    (html2hiccup (slurp "tw.html")))))
+(deftest tw-test (is (= (edn-file "tw.edn") (html2hiccup (slurp "tw.html")))))
 
-(deftest example-test
-  (is
-   (=
-    (edn-file "example.edn")
-    (html2hiccup (slurp "example.html")))))
+(deftest example-test (is (= (edn-file "example.edn") (html2hiccup (slurp "example.html")))))
 
-(deftest windmill-test (is (not= [] (html2hiccup (slurp "windmill.html")))))
+(deftest windmill-test (is (= (edn-file "windmill.edn") (html2hiccup (slurp "windmill.html")))))
 
 (deftest defer-test
   (is (= '([:html [:head [:script {:defer true :src "s.js"}]] [:body]])
