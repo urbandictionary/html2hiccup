@@ -4,7 +4,7 @@
    [hickory.core :as hickory]
    [clojure.string :as str]
    [clojure.walk :refer [postwalk]]
-   [zprint.core :refer [czprint]]))
+   [zprint.core :refer [zprint]]))
 
 (defn remove-blanks
   [node]
@@ -56,7 +56,7 @@
                   (rest (rest node))))
     node))
 
-(defn fix-alpine-keywords [node] (if (and (keyword? node) (re-find #"^:" (name node))) (name node) node))
+(defn fix-alpine-keywords [node] (if (and (keyword? node) (re-find #"^[:@]" (name node))) (name node) node))
 
 (defn html2hiccup
   [input]
@@ -76,4 +76,4 @@
   (->> file
        slurp
        html2hiccup
-       czprint))
+       zprint))
