@@ -1,16 +1,22 @@
 <!doctype html>
 <html>
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="//unpkg.com/alpinejs" defer></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="//unpkg.com/alpinejs" defer></script>
 </head>
+
 <body x-data="{input: ''}">
-    <form>
-        <textarea class="border border-black w-full h-32" x-model="input"></textarea>
-    </form>
-    <div x-text="input">
+    <div class="max-w-prose mx-auto pt-3">
+        <div class="text-xl font-bold">html2hiccup</div>
+        <form>
+            <textarea class="border border-black w-full h-32 font-mono" x-model="input"></textarea>
+        </form>
+        <div class="whitespace-pre font-mono" x-text="input">
+        </div>
     </div>
 </body>
+
 </html>
