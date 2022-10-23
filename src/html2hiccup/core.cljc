@@ -15,7 +15,8 @@
 (def try-keyword-attr-vals
   #(zipmap (keys %) (map try-keyword-attr-val (vals %))))
 (def comment? #(re-matches #"<!--.+-->" %))
-(def blank-string-or-comment? #(and (string? %) (or (str/blank? %) (comment? %))))
+(def blank-string-or-comment?
+  #(and (string? %) (or (str/blank? %) (comment? %))))
 
 (defn remove-blank-strings-and-html-comments
   [node]
