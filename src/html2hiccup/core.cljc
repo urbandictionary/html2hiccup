@@ -4,13 +4,16 @@
             [clojure.walk :refer [postwalk]]
             [clojure.edn :as edn]))
 
-(def hiccup-vec? #(and (vector? %) (keyword? (first %)) (map? (second %))))
-(def keywordable? #(and (string? %) (re-matches #"[-a-zA-Z0-9:_]+" %)))
-(def try-keyword #(if (keywordable? %) (keyword %) %))
-(def try-keyword-vals #(zipmap (keys %) (map try-keyword (vals %))))
-(def hiccup-walker #(fn [node] (if (hiccup-vec? node) (% node) node)))
+(def keywordable-attr-val?
+  #(and (string? %) (re-matches #"[a-zA-Z0-9_][-a-zA-Z0-9:_]+" %)))
+(def keywordable-class? #(and (string? %) (re-matches #"[-a-zA-Z0-9:_]+" %)))
 (def concatv #(into [] (apply concat %&)))
+(def hiccup-vec? #(and (vector? %) (keyword? (first %)) (map? (second %))))
+(def hiccup-walker #(fn [node] (if (hiccup-vec? node) (% node) node)))
 (def numeric? #(and (string? %) (re-matches #"[1-9][0-9]*" %)))
+(def try-keyword-attr-val #(if (keywordable-attr-val? %) (keyword %) %))
+(def try-keyword-attr-vals
+  #(zipmap (keys %) (map try-keyword-attr-val (vals %))))
 
 (defn remove-blank-strings-and-html-comments
   [[tag attrs & children]]
@@ -25,9 +28,9 @@
   [[tag attrs & children :as node]]
   (if (empty? attrs) (concatv [tag] children) node))
 
-(defn keywordize-attr-values
+(defn keywordize-attr-vals
   [[tag attrs & children]]
-  (concatv [tag (try-keyword-vals attrs)] children))
+  (concatv [tag (try-keyword-attr-vals attrs)] children))
 
 (defn change-empty-string-attrs-to-true
   [[tag attrs & children]]
@@ -42,7 +45,7 @@
   [[tag attrs & children :as node]]
   (if (:class attrs)
     (let [classes (str/split (:class attrs) #"\s+")]
-      (if (every? keywordable? classes)
+      (if (every? keywordable-class? classes)
         (concatv [(keyword (str/join "." (concat [(name tag)] classes)))
                   (dissoc attrs :class)]
                  children)
@@ -70,5 +73,5 @@
        (postwalk (hiccup-walker change-id-to-hiccup))
        (postwalk (hiccup-walker change-class-list-to-hiccup))
        (postwalk (hiccup-walker change-empty-string-attrs-to-true))
-       (postwalk (hiccup-walker keywordize-attr-values))
+       (postwalk (hiccup-walker keywordize-attr-vals))
        (postwalk (hiccup-walker remove-empty-attr-maps))))
