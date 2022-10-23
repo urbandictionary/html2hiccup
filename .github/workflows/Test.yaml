@@ -15,5 +15,5 @@ jobs:
         uses: DeLaGuardo/setup-clojure@9.5
         with:
           lein: 2.9.1
-      - name: Get leiningen version
+      - name: Run tests
         run: lein bat-test
