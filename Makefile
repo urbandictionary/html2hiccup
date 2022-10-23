@@ -7,3 +7,6 @@ test:
 
 format:
 	find . -name \*.clj -or -name \*.edn | xargs zprint -w
+
+shadow:
+	 lein run -m shadow.cljs.devtools.cli compile app

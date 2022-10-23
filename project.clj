@@ -7,7 +7,9 @@
   :bat-test {:capture-output? false}
   :dependencies [[org.clojure/clojure "1.11.1"]
                  [hickory/hickory "0.7.1"]
+                 [org.clojure/clojurescript "1.11.60"]
                  [zprint "1.2.4"]
+                 [thheller/shadow-cljs "2.20.6"]
                  [org.clojure/tools.reader "1.3.6"]]
   :main ^:skip-aot html2hiccup.core
   :target-path "target/%s"

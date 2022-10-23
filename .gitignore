@@ -12,3 +12,4 @@ pom.xml.asc
 .lsp
 .clj-kondo
 wm.edn
+.shadow-cljs
