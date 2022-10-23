@@ -5,7 +5,7 @@
             [clojure.edn :as edn]))
 
 (def hiccup-vec? #(and (vector? %) (keyword? (first %)) (map? (second %))))
-(def keywordable? #(and (string? %) (re-matches #"[a-zA-Z][-a-zA-Z0-9:_]+" %)))
+(def keywordable? #(and (string? %) (re-matches #"[-a-zA-Z0-9:_]+" %)))
 (def try-keyword #(if (keywordable? %) (keyword %) %))
 (def try-keyword-vals #(zipmap (keys %) (map try-keyword (vals %))))
 (def hiccup-walker #(fn [node] (if (hiccup-vec? node) (% node) node)))
