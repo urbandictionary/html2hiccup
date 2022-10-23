@@ -17,10 +17,11 @@
     <script src="//unpkg.com/alpinejs" defer></script>
 </head>
 
-<body x-data="h2h" class="p-5">
+<body x-data="h2h" class="p-5 bg-gray-100">
     <div class="container mx-auto">
-        <textarea rows="10" class="p-2 w-full font-mono bg-gray-300" x-model="input"></textarea>
-        <pre x-text="output"></pre>
+        <div class="text-xl font-bold">html2hiccup</div>
+        <textarea rows="10" class="mt-3 p-2 w-full border border-gray-300 font-mono h-32" x-model="input"></textarea>
+        <div class="mt-3 px-1 whitespace-pre font-mono" x-text="output"></div>
     </div>
 </body>
 
