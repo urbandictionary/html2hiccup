@@ -8,6 +8,7 @@
 (def hiccup-vector-with-attrs? #(and (vector? %) (keyword? (first %)) (map? (second %))))
 (def keywordable? #(and (string? %) (re-matches #"[a-zA-Z][-a-zA-Z0-9:]+" %)))
 (def try-keyword #(if (keywordable? %) (keyword %) %))
+(def try-keyword-vals #(zipmap (keys %) (map try-keyword (vals %))))
 (def hiccup-walker #(fn [x] (if (hiccup-vector-with-attrs? x) (% x) x)))
 (def concatv #(into [] (apply concat %&)))
 
@@ -19,12 +20,10 @@
 (defn trim-all-strings [x] (if (string? x) (str/trim x) x))
 
 (defn remove-empty-attr-maps
-  [x]
-  (if (and (hiccup-vector-with-attrs? x) (empty? (second x))) (concatv [(first x)] (rest (rest x))) x))
+  [[tag attrs & children :as node]]
+  (if (empty? attrs) (concatv [tag] children) node))
 
-(defn keywordize-attr-values
-  [x]
-  (concatv [(first x) (zipmap (keys (second x)) (map try-keyword (vals (second x))))] (rest (rest x))))
+(defn keywordize-attr-values [[tag attrs & children]] (concatv [tag (try-keyword-vals attrs)] children))
 
 (defn change-empty-string-attrs-to-true
   [x]
@@ -57,4 +56,4 @@
        (postwalk (hiccup-walker change-class-list-to-hiccup))
        (postwalk (hiccup-walker change-empty-string-attrs-to-true))
        (postwalk (hiccup-walker keywordize-attr-values))
-       (postwalk remove-empty-attr-maps)))
+       (postwalk (hiccup-walker remove-empty-attr-maps))))
