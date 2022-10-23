@@ -1,7 +1,9 @@
 (ns html2hiccup.browser
   (:require
    [html2hiccup.core :refer [html2hiccup]]
-   [zprint.core :refer [czprint]]
-   ["ansi-to-html" :as ansi-to-html]))
+   [zprint.core :refer [zprint]]))
 
-(defn convert [input] (.toHtml (ansi-to-html. #js {:newline true}) (with-out-str (czprint (html2hiccup input)))))
+(defn convert [input]
+  (let [x (with-out-str (zprint (html2hiccup input)))]
+    (js/console.log x)
+    x))
