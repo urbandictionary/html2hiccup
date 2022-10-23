@@ -17,9 +17,7 @@ jobs:
           lein: 2.9.1
       - name: Run tests
         run: lein bat-test
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 16
+      - uses: bahmutov/npm-install@v1
       - name: Generate main.js
         run: lein run -m shadow.cljs.devtools.cli release app
       - name: Deploy 🚀
