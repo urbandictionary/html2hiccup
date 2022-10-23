@@ -52,7 +52,7 @@
 
 (defn convert-numbers [x] (if (and (string? x) (re-matches #"[0-9]+" x)) (edn/read-string x) x))
 
-(defn html2hiccup
+(defn ^:export html2hiccup
   [input]
   (->> input
        hickory/parse
