@@ -10,7 +10,7 @@
         document.addEventListener('alpine:init', () => {
             Alpine.data('dropdown', () => ({
                 input: '<div class="asdf"></div>',
-                get x() { return html2hiccup.browser.convert(this.input); }
+                get output() { return html2hiccup.browser.convert(this.input); }
             }))
         });
     </script>
@@ -20,7 +20,7 @@
 <body x-data="dropdown">
     <textarea x-model="input">
     </textarea>
-    <pre x-text="x"></pre>
+    <pre x-text="output"></pre>
 </body>
 
 </html>
