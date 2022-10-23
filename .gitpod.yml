@@ -1,0 +1,10 @@
+vscode:
+  extensions:
+    - betterthantomorrow.calva
+    - mhutchie.git-graph
+tasks:
+  - init: brew install leiningen
+    command: make test
+ports:
+  - port: 8020
+    onOpen: open-browser

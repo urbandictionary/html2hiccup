@@ -5,12 +5,13 @@
    [clojure.walk :refer [postwalk]]
    [clojure.edn :as edn]))
 
-(def hiccup-vector-with-attrs? #(and (vector? %) (keyword? (first %)) (map? (second %))))
+(def hiccup-vec? #(and (vector? %) (keyword? (first %)) (map? (second %))))
 (def keywordable? #(and (string? %) (re-matches #"[a-zA-Z][-a-zA-Z0-9:]+" %)))
 (def try-keyword #(if (keywordable? %) (keyword %) %))
 (def try-keyword-vals #(zipmap (keys %) (map try-keyword (vals %))))
-(def hiccup-walker #(fn [x] (if (hiccup-vector-with-attrs? x) (% x) x)))
+(def hiccup-walker #(fn [node] (if (hiccup-vec? node) (% node) node)))
 (def concatv #(into [] (apply concat %&)))
+(def numeric? #(and (string? %) (re-matches #"[1-9][0-9]*" %)))
 
 (defn remove-blank-strings-and-html-comments
   [[tag attrs & children]]
@@ -40,9 +41,7 @@
         node))
     node))
 
-(defn convert-numbers
-  [node]
-  (if (and (string? node) (re-matches #"[1-9][0-9]*" node)) (edn/read-string node) node))
+(defn convert-numbers [node] (if (numeric? node) (edn/read-string node) node))
 
 (defn ^:export html2hiccup
   [input]
