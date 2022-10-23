@@ -1,10 +1,10 @@
 (ns html2hiccup.core
-  (:gen-class)
   (:require
    [hickory.core :as hickory]
    [clojure.string :as str]
    [clojure.walk :refer [postwalk]]
-   [zprint.core :refer [zprint]]))
+   [clojure.edn :as edn]
+   ))
 
 (def hiccup-vector-with-attrs? #(and (vector? %) (keyword? (first %)) (map? (second %))))
 (def keywordable? #(and (string? %) (re-matches #"[a-zA-Z][-a-zA-Z0-9:]+" %)))
@@ -50,7 +50,7 @@
         x))
     x))
 
-(defn convert-numbers [x] (if (and (string? x) (re-matches #"[0-9]+" x)) (Long/parseLong x) x))
+(defn convert-numbers [x] (if (and (string? x) (re-matches #"[0-9]+" x)) (edn/read-string x) x))
 
 (defn html2hiccup
   [input]
@@ -65,10 +65,3 @@
        (postwalk (hiccup-walker change-empty-string-attrs-to-true))
        (postwalk (hiccup-walker keywordize-attr-values))
        (postwalk remove-empty-attr-maps)))
-
-(defn -main
-  [file]
-  (->> file
-       slurp
-       html2hiccup
-       zprint))
