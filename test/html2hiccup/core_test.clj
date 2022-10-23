@@ -19,7 +19,7 @@
          (html2hiccup "<script defer src='s.js'></script>"))))
 
 (deftest a-1-test
-  (is (= '([:html [:head] [:body [:a {:class "a-1 b-2 c-3" :href "#"}]]])
+  (is (= '([:html [:head] [:body [:a.a-1.b-2.c-3 {:href "#"}]]])
          (html2hiccup "<a class=\"a-1 b-2 c-3\" href=\"#\"></a>"))))
 
 (deftest alpine-test

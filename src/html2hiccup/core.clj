@@ -38,6 +38,16 @@
 
 (defn fix-alpine-attrs [x] (if (and (keyword? x) (re-find #"^[:@]" (name x))) (name x) x))
 
+(defn change-class-list-to-hiccup
+  [x]
+  (if (:class (second x))
+    (let [classes (str/split (:class (second x)) #"\s+")]
+      (if (every? keywordable? classes)
+        (concat [(keyword (str/join "." (concat [(name (first x))] classes))) (dissoc (second x) :class)]
+                (rest (rest x)))
+        x))
+    x))
+
 (defn html2hiccup
   [input]
   (->> input
@@ -46,6 +56,7 @@
        (postwalk fix-alpine-attrs)
        (postwalk (hiccup-walker remove-blank-strings-and-html-comments))
        (postwalk trim-all-strings)
+       (postwalk (hiccup-walker change-class-list-to-hiccup))
        (postwalk (hiccup-walker change-empty-string-attrs-to-true))
        (postwalk (hiccup-walker keywordize-attr-values))
        (postwalk remove-empty-attr-maps)))
