@@ -6,9 +6,11 @@
    [clojure.walk :refer [postwalk]]
    [zprint.core :refer [zprint]]))
 
+(def hiccup-vector-with-attrs? #(and (vector? %) (keyword? (first %)) (map? (second %))))
+
 (defn remove-blank-strings-and-html-comments
   [node]
-  (if (and (vector? node) (keyword? (first node)) (map? (second node)))
+  (if (hiccup-vector-with-attrs? node)
     (->> (concat [(first node) (second node)]
                  (remove #(and (string? %) (or (str/blank? %) (re-matches #"<!-- .+ -->" %)))
                          (rest (rest node))))
@@ -19,7 +21,7 @@
 
 (defn remove-empty-attr-maps
   [node]
-  (if (and (vector? node) (keyword? (first node)) (map? (second node)) (empty? (second node)))
+  (if (and (hiccup-vector-with-attrs? node) (empty? (second node)))
     (into [] (concat [(first node)] (rest (rest node))))
     node))
 
@@ -29,7 +31,7 @@
 
 (defn keywordize-attr-keys
   [node]
-  (if (and (vector? node) (keyword? (first node)) (map? (second node)))
+  (if (hiccup-vector-with-attrs? node)
     (into []
           (concat [(first node) (zipmap (keys (second node)) (map try-keyword (vals (second node))))]
                   (rest (rest node))))
@@ -37,7 +39,7 @@
 
 (defn attr-values-empty-strings->true
   [node]
-  (if (and (vector? node) (keyword? (first node)) (map? (second node)))
+  (if (hiccup-vector-with-attrs? node)
     (into []
           (concat [(first node)
                    (zipmap (keys (second node)) (map #(if (= "" %) true %) (vals (second node))))]
