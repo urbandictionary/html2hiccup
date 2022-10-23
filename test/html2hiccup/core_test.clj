@@ -22,9 +22,7 @@
   (is (= '([:html [:head] [:body [:a.a-1.b-2.c-3 {:href "#"}]]])
          (html2hiccup "<a class=\"a-1 b-2 c-3\" href=\"#\"></a>"))))
 
-(deftest a-1-test
-  (is (= '([:html [:head] [:body [:div 1234]]])
-         (html2hiccup "<div>1234</div>"))))
+(deftest numbers-test (is (= '([:html [:head] [:body [:div 1234]]]) (html2hiccup "<div>1234</div>"))))
 
 (deftest alpine-test
   (is (= '([:html [:head] [:body [:a {":href" "#"} "x"]]]) (html2hiccup "<a :href=\"#\">x</a>")))
