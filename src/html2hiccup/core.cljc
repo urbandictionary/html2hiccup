@@ -17,10 +17,10 @@
 (def comment? #(re-matches #"<!--.+-->" %))
 
 (defn remove-blank-strings-and-html-comments
-  [[tag attrs & children]]
-  (concatv [tag attrs]
-           (remove #(and (string? %) (or (str/blank? %) (comment? %)))
-             children)))
+  [node]
+  (if (and (sequential? node) (not (map-entry? node)))
+    (into [] (remove #(and (string? %) (or (str/blank? %) (comment? %))) node))
+    node))
 
 (defn trim-all-strings [x] (if (string? x) (str/trim x) x))
 
@@ -69,7 +69,7 @@
        (postwalk fix-alpine-attrs)
        (postwalk trim-all-strings)
        (postwalk convert-numbers)
-       (postwalk (hiccup-walker remove-blank-strings-and-html-comments))
+       (postwalk remove-blank-strings-and-html-comments)
        (postwalk (hiccup-walker change-id-to-hiccup))
        (postwalk (hiccup-walker change-class-list-to-hiccup))
        (postwalk (hiccup-walker change-empty-string-attrs-to-true))

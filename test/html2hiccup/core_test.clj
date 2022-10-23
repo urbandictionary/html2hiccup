@@ -25,6 +25,10 @@
   (is (= '([:html [:head] [:body [:a#eye {:href "#"}]]])
          (html2hiccup "<a id=\"eye\" href=\"#\"></a>"))))
 
+(deftest comments-test
+  (is (= '([:html [:head] [:body [:div]]])
+         (html2hiccup "<!-- asdf --><div><!-- zxcv --></div>"))))
+
 (deftest numbers-test
   (is (= '([:html [:head] [:body [:div 1234]]])
          (html2hiccup "<div>1234</div>"))))
