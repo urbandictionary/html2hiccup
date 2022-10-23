@@ -25,7 +25,7 @@
     (into [] (concat [(first x)] (rest (rest x))))
     x))
 
-(defn keywordize-attr-keys
+(defn keywordize-attr-values
   [x]
   (into []
         (concat [(first x) (zipmap (keys (second x)) (map try-keyword (vals (second x))))] (rest (rest x)))))
@@ -47,7 +47,7 @@
        (postwalk (hiccup-walker remove-blank-strings-and-html-comments))
        (postwalk trim-all-strings)
        (postwalk (hiccup-walker change-empty-string-attrs-to-true))
-       (postwalk (hiccup-walker keywordize-attr-keys))
+       (postwalk (hiccup-walker keywordize-attr-values))
        (postwalk remove-empty-attr-maps)))
 
 (defn -main
