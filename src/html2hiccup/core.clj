@@ -7,6 +7,8 @@
    [zprint.core :refer [zprint]]))
 
 (def hiccup-vector-with-attrs? #(and (vector? %) (keyword? (first %)) (map? (second %))))
+(def keywordable? #(and (string? %) (re-matches #"[a-zA-Z][-a-zA-Z0-9:]+" %)))
+(def try-keyword #(if (keywordable? %) (keyword %) %))
 
 (defn remove-blank-strings-and-html-comments
   [node]
@@ -24,10 +26,6 @@
   (if (and (hiccup-vector-with-attrs? node) (empty? (second node)))
     (into [] (concat [(first node)] (rest (rest node))))
     node))
-
-(def keywordable? #(and (string? %) (re-matches #"[a-zA-Z][-a-zA-Z0-9:]+" %)))
-
-(def try-keyword #(if (keywordable? %) (keyword %) %))
 
 (defn keywordize-attr-keys
   [node]
