@@ -9,31 +9,27 @@
 (def keywordable? #(and (string? %) (re-matches #"[a-zA-Z][-a-zA-Z0-9:]+" %)))
 (def try-keyword #(if (keywordable? %) (keyword %) %))
 (def hiccup-walker #(fn [x] (if (hiccup-vector-with-attrs? x) (% x) x)))
+(def concatv #(into [] (apply concat %&)))
 
 (defn remove-blank-strings-and-html-comments
-  [x]
-  (->> (concat [(first x) (second x)]
-               (remove #(and (string? %) (or (str/blank? %) (re-matches #"<!-- .+ -->" %))) (rest (rest x))))
-       (into [])))
+  [[tag attrs & children]]
+  (concatv [tag attrs]
+           (remove #(and (string? %) (or (str/blank? %) (re-matches #"<!-- .+ -->" %))) children)))
 
 (defn trim-all-strings [x] (if (string? x) (str/trim x) x))
 
 (defn remove-empty-attr-maps
   [x]
-  (if (and (hiccup-vector-with-attrs? x) (empty? (second x)))
-    (into [] (concat [(first x)] (rest (rest x))))
-    x))
+  (if (and (hiccup-vector-with-attrs? x) (empty? (second x))) (concatv [(first x)] (rest (rest x))) x))
 
 (defn keywordize-attr-values
   [x]
-  (into []
-        (concat [(first x) (zipmap (keys (second x)) (map try-keyword (vals (second x))))] (rest (rest x)))))
+  (concatv [(first x) (zipmap (keys (second x)) (map try-keyword (vals (second x))))] (rest (rest x))))
 
 (defn change-empty-string-attrs-to-true
   [x]
-  (into []
-        (concat [(first x) (zipmap (keys (second x)) (map #(if (= "" %) true %) (vals (second x))))]
-                (rest (rest x)))))
+  (concatv [(first x) (zipmap (keys (second x)) (map #(if (= "" %) true %) (vals (second x))))]
+           (rest (rest x))))
 
 (defn fix-alpine-attrs [x] (if (and (keyword? x) (re-find #"^[:@]" (name x))) (name x) x))
 
@@ -42,10 +38,8 @@
   (if (:class (second x))
     (let [classes (str/split (:class (second x)) #"\s+")]
       (if (every? keywordable? classes)
-        (into []
-              (concat [(keyword (str/join "." (concat [(name (first x))] classes)))
-                       (dissoc (second x) :class)]
-                      (rest (rest x))))
+        (concatv [(keyword (str/join "." (concat [(name (first x))] classes))) (dissoc (second x) :class)]
+                 (rest (rest x)))
         x))
     x))
 
