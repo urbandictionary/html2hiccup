@@ -3,8 +3,7 @@
    [hickory.core :as hickory]
    [clojure.string :as str]
    [clojure.walk :refer [postwalk]]
-   [clojure.edn :as edn]
-   ))
+   [clojure.edn :as edn]))
 
 (def hiccup-vector-with-attrs? #(and (vector? %) (keyword? (first %)) (map? (second %))))
 (def keywordable? #(and (string? %) (re-matches #"[a-zA-Z][-a-zA-Z0-9:]+" %)))
