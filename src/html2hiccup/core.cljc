@@ -26,23 +26,23 @@
 (defn keywordize-attr-values [[tag attrs & children]] (concatv [tag (try-keyword-vals attrs)] children))
 
 (defn change-empty-string-attrs-to-true
-  [x]
-  (concatv [(first x) (zipmap (keys (second x)) (map #(if (= "" %) true %) (vals (second x))))]
-           (rest (rest x))))
+  [[tag attrs & children]]
+  (concatv [tag (zipmap (keys attrs) (map #(if (= "" %) true %) (vals attrs)))] children))
 
-(defn fix-alpine-attrs [x] (if (and (keyword? x) (re-find #"^[:@]" (name x))) (name x) x))
+(defn fix-alpine-attrs [node] (if (and (keyword? node) (re-find #"^[:@]" (name node))) (name node) node))
 
 (defn change-class-list-to-hiccup
-  [x]
-  (if (:class (second x))
-    (let [classes (str/split (:class (second x)) #"\s+")]
+  [[tag attrs & children :as node]]
+  (if (:class attrs)
+    (let [classes (str/split (:class attrs) #"\s+")]
       (if (every? keywordable? classes)
-        (concatv [(keyword (str/join "." (concat [(name (first x))] classes))) (dissoc (second x) :class)]
-                 (rest (rest x)))
-        x))
-    x))
+        (concatv [(keyword (str/join "." (concat [(name tag)] classes))) (dissoc attrs :class)] children)
+        node))
+    node))
 
-(defn convert-numbers [x] (if (and (string? x) (re-matches #"[0-9]+" x)) (edn/read-string x) x))
+(defn convert-numbers
+  [node]
+  (if (and (string? node) (re-matches #"[0-9]+" node)) (edn/read-string node) node))
 
 (defn ^:export html2hiccup
   [input]
