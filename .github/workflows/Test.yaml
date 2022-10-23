@@ -10,13 +10,15 @@ jobs:
         uses: actions/setup-java@v3
         with:
           distribution: "zulu"
-          java-version: "8"
+          java-version: "11"
       - name: Install clojure tools
         uses: DeLaGuardo/setup-clojure@9.5
         with:
           lein: 2.9.1
       - name: Run tests
         run: lein bat-test
+      - name: Get deps
+        run: lein deps :tree
       - name: Generate main.js
         run: lein run -m shadow.cljs.devtools.cli release app
       - name: Deploy 🚀
