@@ -6,4 +6,9 @@
 
 (.. hljs (registerLanguage "clojure" hljs-clojure))
 
-(defn convert [input] (.. hljs (highlight (with-out-str (zprint (html2hiccup input))) #js {:language "clojure"}) -value))
+(defn convert
+  [input]
+  (.. hljs
+      (highlight (with-out-str (zprint (html2hiccup input)))
+                 #js {:language "clojure"})
+      -value))
