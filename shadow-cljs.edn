@@ -1,5 +1,5 @@
-{:builds {:app {:devtools {:http-port 8020 :http-root "docs"}
-                :modules {:main {:entries [html2hiccup.browser]}}
-                :output-dir "docs/js"
-                :target :browser}}
+{:builds {:app {:devtools {:http-port 8020, :http-root "docs"},
+                :modules {:main {:entries [html2hiccup.browser]}},
+                :output-dir "docs/js",
+                :target :browser}},
  :lein true}

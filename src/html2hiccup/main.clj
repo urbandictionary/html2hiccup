@@ -1,7 +1,6 @@
 (ns html2hiccup.main
-  (:require
-   [html2hiccup.core :refer [html2hiccup]]
-   [zprint.core :refer [zprint]]))
+  (:require [html2hiccup.core :refer [html2hiccup]]
+            [zprint.core :refer [zprint]]))
 
 (defn -main
   [file]
