@@ -12,7 +12,7 @@
 
 (deftest example-test (is (= (edn-file "example.edn") (html2hiccup (slurp "example.html")))))
 
-;; (deftest windmill-test (is (= (edn-file "windmill.edn") (html2hiccup (slurp "windmill.html")))))
+(deftest windmill-test (is (= (edn-file "windmill.edn") (html2hiccup (slurp "windmill.html")))))
 
 (deftest defer-test
   (is (= '([:html [:head [:script {:defer true :src "s.js"}]] [:body]])

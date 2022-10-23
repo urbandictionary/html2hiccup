@@ -43,8 +43,10 @@
   (if (:class (second x))
     (let [classes (str/split (:class (second x)) #"\s+")]
       (if (every? keywordable? classes)
-        (concat [(keyword (str/join "." (concat [(name (first x))] classes))) (dissoc (second x) :class)]
-                (rest (rest x)))
+        (into []
+              (concat [(keyword (str/join "." (concat [(name (first x))] classes)))
+                       (dissoc (second x) :class)]
+                      (rest (rest x))))
         x))
     x))
 
