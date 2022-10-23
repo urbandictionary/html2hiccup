@@ -8,7 +8,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         document.addEventListener('alpine:init', () => {
-            Alpine.data('dropdown', () => ({
+            Alpine.data('h2h', () => ({
                 input: '<div class="asdf"></div>',
                 get output() { return html2hiccup.browser.convert(this.input); }
             }))
@@ -17,7 +17,7 @@
     <script src="//unpkg.com/alpinejs" defer></script>
 </head>
 
-<body x-data="dropdown" class="p-5">
+<body x-data="h2h" class="p-5">
     <div class="container mx-auto">
         <textarea rows="10" class="p-2 w-full font-mono bg-gray-300" x-model="input"></textarea>
         <pre x-text="output"></pre>
