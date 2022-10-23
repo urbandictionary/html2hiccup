@@ -3,4 +3,4 @@
             [zprint.core :refer [czprint]]))
 
 (defn convert [input]
-  (with-out-str (czprint [:a "zxcv"])))
+  (with-out-str (czprint (html2hiccup input))))
