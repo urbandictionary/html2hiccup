@@ -4,13 +4,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="//unpkg.com/alpinejs" defer></script>
     <script src="js/main.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/ansi_up@5.1.0/ansi_up.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('dropdown', () => ({
+                input: '<div class="asdf"></div>',
+                get x() { return html2hiccup.browser.convert(this.input); }
+            }))
+        });
+    </script>
+    <script src="//unpkg.com/alpinejs" defer></script>
 </head>
 
-<body x-data="{input: '<div class=&quot;asdf&quot;></div>', get x() { return new AnsiUp().ansi_to_html(html2hiccup.browser.convert(this.input)) }}">
+<body x-data="dropdown">
     <textarea x-model="input">
     </textarea>
     <div class="font-mono white-space-pre">
