@@ -12,13 +12,13 @@
 
 (deftest example-test (is (= (edn-file "example.edn") (html2hiccup (slurp "example.html")))))
 
-(deftest windmill-test (is (= (edn-file "windmill.edn") (html2hiccup (slurp "windmill.html")))))
+;; (deftest windmill-test (is (= (edn-file "windmill.edn") (html2hiccup (slurp "windmill.html")))))
 
 (deftest defer-test
   (is (= '([:html [:head [:script {:defer true :src "s.js"}]] [:body]])
          (html2hiccup "<script defer src='s.js'></script>"))))
 
-(deftest defer-test
+(deftest a-1-test
   (is (= '([:html [:head] [:body [:a {:class "a-1 b-2 c-3" :href "#"}]]])
          (html2hiccup "<a class=\"a-1 b-2 c-3\" href=\"#\"></a>"))))
 
