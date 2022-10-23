@@ -15,11 +15,12 @@
 (def try-keyword-attr-vals
   #(zipmap (keys %) (map try-keyword-attr-val (vals %))))
 (def comment? #(re-matches #"<!--.+-->" %))
+(def blank-string-or-comment? #(and (string? %) (or (str/blank? %) (comment? %))))
 
 (defn remove-blank-strings-and-html-comments
   [node]
   (if (and (sequential? node) (not (map-entry? node)))
-    (into [] (remove #(and (string? %) (or (str/blank? %) (comment? %))) node))
+    (into [] (remove blank-string-or-comment? node))
     node))
 
 (defn trim-all-strings [x] (if (string? x) (str/trim x) x))
