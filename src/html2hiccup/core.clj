@@ -27,8 +27,6 @@
 
 (def try-keyword #(if (keywordable? %) (keyword %) %))
 
-(defn tw-classes [classes] (map try-keyword (str/split classes #"\s+")))
-
 (defn keyword-attr-keys
   [node]
   (if (and (vector? node) (keyword? (first node)) (map? (second node)))
@@ -46,17 +44,6 @@
                   (rest (rest node))))
     node))
 
-(defn tw
-  [node]
-  (if (and (vector? node) (keyword? (first node)) (map? (second node)) (:class (second node)))
-    (into []
-          (concat [(first node)]
-                  [(apply list
-                          (cond-> (into [] (concat ['tw] (tw-classes (:class (second node)))))
-                            (not= [:class] (keys (second node))) (conj (dissoc (second node) :class))))]
-                  (rest (rest node))))
-    node))
-
 (defn fix-alpine-keywords [node] (if (and (keyword? node) (re-find #"^[:@]" (name node))) (name node) node))
 
 (defn html2hiccup
@@ -67,7 +54,6 @@
        (postwalk fix-alpine-keywords)
        (postwalk remove-blanks)
        (postwalk trim-strings)
-       (postwalk tw)
        (postwalk true-attr-values)
        (postwalk keyword-attr-keys)
        (postwalk remove-empty-attr-maps)))

@@ -10,8 +10,6 @@
 
 (defn edn-file [path] (edn/read (PushbackReader. (io/reader path))))
 
-(deftest tw-test (is (= (edn-file "tw.edn") (html2hiccup (slurp "tw.html")))))
-
 (deftest example-test (is (= (edn-file "example.edn") (html2hiccup (slurp "example.html")))))
 
 (deftest windmill-test (is (= (edn-file "windmill.edn") (html2hiccup (slurp "windmill.html")))))
@@ -21,7 +19,7 @@
          (html2hiccup "<script defer src='s.js'></script>"))))
 
 (deftest defer-test
-  (is (= '([:html [:head] [:body [:a (tw :a-1 :b-2 :c-3 {:href "#"})]]])
+  (is (= '([:html [:head] [:body [:a {:class "a-1 b-2 c-3" :href "#"}]]])
          (html2hiccup "<a class=\"a-1 b-2 c-3\" href=\"#\"></a>"))))
 
 (deftest alpine-test
