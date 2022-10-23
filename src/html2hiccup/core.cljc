@@ -42,7 +42,7 @@
 
 (defn convert-numbers
   [node]
-  (if (and (string? node) (re-matches #"[0-9]+" node)) (edn/read-string node) node))
+  (if (and (string? node) (re-matches #"[1-9][0-9]*" node)) (edn/read-string node) node))
 
 (defn ^:export html2hiccup
   [input]

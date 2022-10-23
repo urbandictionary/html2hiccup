@@ -2,7 +2,7 @@
   (:require
    [clojure.test :refer [deftest is]]
    [hickory.render :refer [hiccup-to-html]]
-   [html2hiccup.core :refer [html2hiccup]]
+   [html2hiccup.core :refer [html2hiccup convert-numbers]]
    [clojure.java.io :as io]
    [clojure.edn :as edn])
   (:import
@@ -30,3 +30,5 @@
 
 (deftest defer->html-test
   (is (= "<script defer>hi</script>" (hiccup-to-html (list [:script {:defer true} "hi"])))))
+
+(deftest convert-numbers-test (is (= 1 (convert-numbers "1"))) (is (= "09" (convert-numbers "09"))))
