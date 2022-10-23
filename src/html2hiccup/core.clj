@@ -30,7 +30,7 @@
   (into []
         (concat [(first x) (zipmap (keys (second x)) (map try-keyword (vals (second x))))] (rest (rest x)))))
 
-(defn attr-values-empty-strings->true
+(defn change-empty-string-attrs-to-true
   [x]
   (into []
         (concat [(first x) (zipmap (keys (second x)) (map #(if (= "" %) true %) (vals (second x))))]
@@ -46,7 +46,7 @@
        (postwalk fix-alpine-attrs)
        (postwalk (hiccup-walker remove-blank-strings-and-html-comments))
        (postwalk trim-all-strings)
-       (postwalk (hiccup-walker attr-values-empty-strings->true))
+       (postwalk (hiccup-walker change-empty-string-attrs-to-true))
        (postwalk (hiccup-walker keywordize-attr-keys))
        (postwalk remove-empty-attr-maps)))
 
