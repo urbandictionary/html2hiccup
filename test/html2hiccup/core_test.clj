@@ -1,7 +1,7 @@
 (ns html2hiccup.core-test
   (:require [clojure.test :refer [deftest is]]
             [hickory.render :refer [hiccup-to-html]]
-            [html2hiccup.core :refer [html2hiccup convert-numbers]]
+            [html2hiccup.core :refer [html2hiccup convert-numbers comment?]]
             [clojure.java.io :as io]
             [clojure.edn :as edn])
   (:import (java.io PushbackReader)))
@@ -42,3 +42,7 @@
 (deftest convert-numbers-test
   (is (= 1 (convert-numbers "1")))
   (is (= "09" (convert-numbers "09"))))
+
+(deftest comment?-test
+  (is (comment?
+        "<!-- This site was created in Webflow. http://www.webflow.com-->")))

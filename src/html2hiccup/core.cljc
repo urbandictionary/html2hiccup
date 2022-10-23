@@ -14,12 +14,12 @@
 (def try-keyword-attr-val #(if (keywordable-attr-val? %) (keyword %) %))
 (def try-keyword-attr-vals
   #(zipmap (keys %) (map try-keyword-attr-val (vals %))))
+(def comment? #(re-matches #"<!--.+-->" %))
 
 (defn remove-blank-strings-and-html-comments
   [[tag attrs & children]]
   (concatv [tag attrs]
-           (remove #(and (string? %)
-                         (or (str/blank? %) (re-matches #"<!-- .+ -->" %)))
+           (remove #(and (string? %) (or (str/blank? %) (comment? %)))
              children)))
 
 (defn trim-all-strings [x] (if (string? x) (str/trim x) x))
