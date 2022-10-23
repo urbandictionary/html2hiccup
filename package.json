@@ -1,0 +1,27 @@
+{
+  "name": "html2hiccup",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/urbandictionary/html2hiccup.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/urbandictionary/html2hiccup/issues"
+  },
+  "homepage": "https://github.com/urbandictionary/html2hiccup#readme",
+  "dependencies": {
+    "highlight.js": "^11.6.0"
+  }
+}
