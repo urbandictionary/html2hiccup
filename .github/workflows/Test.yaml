@@ -1,11 +1,10 @@
 name: Test
 on: [push]
 jobs:
-  clojure:
+  test:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
       - name: Prepare java
         uses: actions/setup-java@v3
         with:
@@ -17,6 +16,19 @@ jobs:
           lein: 2.9.1
       - name: Run tests
         run: lein bat-test
+  pages:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Prepare java
+        uses: actions/setup-java@v3
+        with:
+          distribution: "zulu"
+          java-version: "11"
+      - name: Install clojure tools
+        uses: DeLaGuardo/setup-clojure@9.5
+        with:
+          lein: 2.9.1
       - uses: bahmutov/npm-install@v1
       - name: Generate main.js
         run: lein run -m shadow.cljs.devtools.cli release app
