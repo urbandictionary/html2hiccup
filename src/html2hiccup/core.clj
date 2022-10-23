@@ -50,14 +50,17 @@
         x))
     x))
 
+(defn convert-numbers [x] (if (and (string? x) (re-matches #"[0-9]+" x)) (Long/parseLong x) x))
+
 (defn html2hiccup
   [input]
   (->> input
        hickory/parse
        hickory/as-hiccup
        (postwalk fix-alpine-attrs)
-       (postwalk (hiccup-walker remove-blank-strings-and-html-comments))
        (postwalk trim-all-strings)
+       (postwalk convert-numbers)
+       (postwalk (hiccup-walker remove-blank-strings-and-html-comments))
        (postwalk (hiccup-walker change-class-list-to-hiccup))
        (postwalk (hiccup-walker change-empty-string-attrs-to-true))
        (postwalk (hiccup-walker keywordize-attr-values))
