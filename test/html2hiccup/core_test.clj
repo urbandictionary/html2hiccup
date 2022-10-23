@@ -19,8 +19,8 @@
          (html2hiccup "<script defer src='s.js'></script>"))))
 
 (deftest a-1-test
-  (is (= '([:html [:head] [:body [:a.a-1.b-2.c-3 {:href "#"}]]])
-         (html2hiccup "<a class=\"a-1 b-2 c-3\" href=\"#\"></a>"))))
+  (is (= '([:html [:head] [:body [:a.a-1.b-2.c-3.d_4 {:href "#"}]]])
+         (html2hiccup "<a class=\"a-1 b-2 c-3 d_4\" href=\"#\"></a>"))))
 
 (deftest numbers-test (is (= '([:html [:head] [:body [:div 1234]]]) (html2hiccup "<div>1234</div>"))))
 
