@@ -10,7 +10,8 @@
         document.addEventListener('alpine:init', () => {
             Alpine.data('h2h', () => ({
                 input: '<div class="asdf"></div>',
-                get output() { return html2hiccup.browser.convert(this.input); }
+                get output() { return html2hiccup.browser.convert(this.input); },
+                async load(file) { this.input = await (await fetch(file)).text(); }
             }));
         });
     </script>
@@ -19,7 +20,15 @@
 
 <body x-data="h2h" class="p-5 bg-gray-100">
     <div class="container mx-auto">
-        <div class="text-xl font-bold">html2hiccup</div>
+        <div class="flex justify-between">
+            <div class="text-xl font-bold">html2hiccup</div>
+            <div class="mt-3">
+                Try:
+                <a class="underline" @click="load('demos/google.html')">google.html</a>
+                <a class="underline" @click="load('demos/example.html')">example.html</a>
+                <a class="underline" @click="load('demos/facebook.html')">facebook.html</a>
+            </div>
+        </div>
         <textarea rows="10" class="mt-3 p-2 w-full border border-gray-300 font-mono h-32" x-model="input"></textarea>
         <div class="mt-3 px-1 whitespace-pre font-mono" x-text="output"></div>
     </div>
