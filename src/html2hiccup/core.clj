@@ -6,7 +6,7 @@
    [clojure.walk :refer [postwalk]]
    [zprint.core :refer [zprint]]))
 
-(defn remove-blanks
+(defn remove-blank-strings-and-html-comments
   [node]
   (if (and (vector? node) (keyword? (first node)) (map? (second node)))
     (->> (concat [(first node) (second node)]
@@ -15,7 +15,7 @@
          (into []))
     node))
 
-(defn trim-strings [node] (if (string? node) (str/trim node) node))
+(defn trim-all-strings [node] (if (string? node) (str/trim node) node))
 
 (defn remove-empty-attr-maps
   [node]
@@ -27,7 +27,7 @@
 
 (def try-keyword #(if (keywordable? %) (keyword %) %))
 
-(defn keyword-attr-keys
+(defn keywordize-attr-keys
   [node]
   (if (and (vector? node) (keyword? (first node)) (map? (second node)))
     (into []
@@ -35,7 +35,7 @@
                   (rest (rest node))))
     node))
 
-(defn true-attr-values
+(defn attr-values-empty-strings->true
   [node]
   (if (and (vector? node) (keyword? (first node)) (map? (second node)))
     (into []
@@ -52,10 +52,10 @@
        hickory/parse
        hickory/as-hiccup
        (postwalk fix-alpine-keywords)
-       (postwalk remove-blanks)
-       (postwalk trim-strings)
-       (postwalk true-attr-values)
-       (postwalk keyword-attr-keys)
+       (postwalk remove-blank-strings-and-html-comments)
+       (postwalk trim-all-strings)
+       (postwalk attr-values-empty-strings->true)
+       (postwalk keywordize-attr-keys)
        (postwalk remove-empty-attr-maps)))
 
 (defn -main
